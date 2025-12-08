@@ -14,32 +14,35 @@ function App() {
     name: localStorage.getItem("name"),
     userId: localStorage.getItem("userId"),
   });
-  const [isOwner, setIsOwner] = useState(false);
+  const [isOwner, setIsOwner] = useState(auth.role === "OWNER");
 
   useEffect(() => {
-    setAuth({
-      token: localStorage.getItem("token"),
-      role: localStorage.getItem("role"),
-      name: localStorage.getItem("name"),
-      userId: localStorage.getItem("userId"),
-    });
+    const token = auth.token;
+    if (!token) return;
 
-    // check if this user is owner of any store
     const checkOwner = async () => {
       try {
-        const res = await API.get("/owner/stores");
-        if (res.data.data && res.data.data.length > 0) setIsOwner(true);
-      } catch (e) {
+        const res = await API.get("/owner/stores", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (res.data.data && res.data.data.length > 0) {
+          setIsOwner(true);
+          localStorage.setItem("role", "OWNER");
+          setAuth(prev => ({ ...prev, role: "OWNER" }));
+        } else {
+          setIsOwner(false);
+        }
+      } catch (err) {
         setIsOwner(false);
       }
     };
 
-    if (auth.token) checkOwner();
+    checkOwner();
   }, [auth.token]);
 
   const logout = () => {
     localStorage.clear();
-    setAuth({ token: null, role: null, name: null });
+    setAuth({ token: null, role: null, name: null, userId: null });
     setIsOwner(false);
     window.location.reload();
   };
@@ -51,12 +54,8 @@ function App() {
         <div className="container mt-4">
           <h3>Welcome — Please login or register</h3>
           <div className="row">
-            <div className="col-md-6">
-              <Login onAuth={() => window.location.reload()} />
-            </div>
-            <div className="col-md-6">
-              <Register />
-            </div>
+            <div className="col-md-6"><Login onAuth={() => window.location.reload()} /></div>
+            <div className="col-md-6"><Register /></div>
           </div>
         </div>
       </div>
@@ -68,18 +67,8 @@ function App() {
       <NavbarAuth auth={auth} logout={logout} />
       <div className="container mt-4">
         {auth.role === "ADMIN" && <AdminDashboard />}
+        {auth.role === "OWNER" && <OwnerDashboard />}
         {auth.role === "USER" && <UserDashboard />}
-        {auth.role === "OWNER" && (
-          <>
-            <UserDashboard /> {/* normal store browsing and rating */}
-            <OwnerDashboard /> {/* their own stores + raters */}
-          </>
-        )}
-        {auth.role === "USER" && isOwner && (
-          <>
-            <OwnerDashboard /> {/* if user is owner too */}
-          </>
-        )}
       </div>
     </div>
   );

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 export default function StoreTable({ data, onRate, onViewRaters, onRefresh }) {
-  // data: array of stores with id,name,address,avg_rating,my_rating
   const [q, setQ] = useState("");
   const [sort, setSort] = useState("name");
   const [order, setOrder] = useState("asc");
