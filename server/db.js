@@ -1,10 +1,14 @@
-import mysql from "mysql2";
+import mysql from "mysql2/promise";
+import dotenv from "dotenv";
+dotenv.config();
 
-const db = mysql.createConnection({
-  host:process.env.DB_HOST || "127.0.0.1",
-  user:process.env.DB_USER || "root",
-  password:process.env.DB_PASSWORD || "vishclara@16",
-  database:process.env.DB_NAME || "ratings_app",
+const pool = mysql.createPool({
+  host: process.env.DB_HOST || "localhost",
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASS || "",
+  database: process.env.DB_NAME || "store_ratings",
+  waitForConnections: true,
+  connectionLimit: 10,
 });
 
-export default db;
+export default pool;

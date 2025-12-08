@@ -16,7 +16,6 @@ export default function Home() {
     <div className="container mt-5">
       <h1 className="mb-4">Welcome to Store Ratings</h1>
 
-      {/* Login & Register Buttons */}
       <div className="mb-4">
         <button className="btn btn-primary me-2" onClick={() => navigate("/login")}>
           Login
@@ -26,7 +25,6 @@ export default function Home() {
         </button>
       </div>
 
-      {/* List of Stores */}
       <h3>All Stores</h3>
       {stores.length === 0 ? (
         <p>No stores registered yet.</p>

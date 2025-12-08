@@ -1,32 +1,38 @@
-CREATE DATABASE ratings_app;
-USE ratings_app;
+CREATE DATABASE IF NOT EXISTS store_ratings;
+USE store_ratings;
 
-/* USERS */
+DROP TABLE IF EXISTS ratings;
+DROP TABLE IF EXISTS stores;
+DROP TABLE IF EXISTS users;
+
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(60) NOT NULL,
   email VARCHAR(100) UNIQUE NOT NULL,
   address VARCHAR(400),
   password VARCHAR(255) NOT NULL,
-  role ENUM('ADMIN','USER','OWNER') NOT NULL
+  role ENUM('ADMIN','USER','OWNER') NOT NULL DEFAULT 'USER',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-/* STORES */
 CREATE TABLE stores (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(100),
+  name VARCHAR(100) NOT NULL,
   email VARCHAR(100),
   address VARCHAR(400),
-  owner_id INT,
-  FOREIGN KEY (owner_id) REFERENCES users(id)
+  owner_id INT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
-/* RATINGS */
 CREATE TABLE ratings (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  user_id INT,
-  store_id INT,
-  rating INT CHECK (rating BETWEEN 1 AND 5),
-  FOREIGN KEY (user_id) REFERENCES users(id),
-  FOREIGN KEY (store_id) REFERENCES stores(id)
+  user_id INT NOT NULL,
+  store_id INT NOT NULL,
+  rating INT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (store_id) REFERENCES stores(id) ON DELETE CASCADE,
+  UNIQUE KEY user_store_unique (user_id, store_id)
 );
