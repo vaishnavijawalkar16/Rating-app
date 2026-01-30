@@ -2,10 +2,10 @@ import bcrypt from "bcrypt";
 import db from "./db.js";
 
 const defaultAdmin = {
-  name: "Admin",
-  email: "admin@example.com",
+  name: "Admin1",
+  email: "admin1@example.com",
   password: "Admin@123!",
-  address: "Head Office"
+  address: "Head Office 2"
 };
 
 bcrypt.hash(defaultAdmin.password, 10, (err, hash) => {

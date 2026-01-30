@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import Login from "./Components/Login";
-import Register from "./Components/Register";
-import AdminDashboard from "./Components/AdminDashboard";
-import UserDashboard from "./Components/UserDashboard";
-import OwnerDashboard from "./Components/OwnerDashboard";
-import NavbarAuth from "./Components/NavbarAuth";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import AdminDashboard from "./components/AdminDashboard";
+import UserDashboard from "./components/UserDashboard";
+import OwnerDashboard from "./components/OwnerDashboard";
+import NavbarAuth from "./components/NavbarAuth";
 import API from "./api";
 
 function App() {
@@ -51,7 +51,7 @@ function App() {
     return (
       <div>
         <NavbarAuth auth={auth} />
-        <div className="container mt-4">
+        <div className="container mt-3 ">
           <h3>Welcome — Please login or register</h3>
           <div className="row">
             <div className="col-md-6"><Login onAuth={() => window.location.reload()} /></div>
@@ -65,7 +65,7 @@ function App() {
   return (
     <div>
       <NavbarAuth auth={auth} logout={logout} />
-      <div className="container mt-4">
+      <div className="container mt-3">
         {auth.role === "ADMIN" && <AdminDashboard />}
         {auth.role === "OWNER" && <OwnerDashboard />}
         {auth.role === "USER" && <UserDashboard />}

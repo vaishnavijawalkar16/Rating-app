@@ -90,9 +90,9 @@ export default function AdminDashboard() {
               <button className="btn btn-sm btn-outline-primary me-2" onClick={()=>fetchUsers()}>Refresh Users</button>
             </div>
             <table className="table table-sm">
-              <thead><tr><th>Name</th><th>Email</th><th>Address</th><th>Role</th></tr></thead>
+              <thead><tr><th>Name</th><th>Email</th><th>Address</th></tr></thead>
               <tbody>
-                {users.map(u => <tr key={u.id}><td>{u.name}</td><td>{u.email}</td><td>{u.address}</td><td>{u.role}</td></tr>)}
+                {users.map(u => <tr key={u.id}><td>{u.name}</td><td>{u.email}</td><td>{u.address}</td></tr>)}
               </tbody>
             </table>
           </div>
