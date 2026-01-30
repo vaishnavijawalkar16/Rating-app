@@ -79,7 +79,7 @@ Database Setup
 schema.sql
 
 ### Admin Test Credentials (for testing)
-Email: admin@example.com
+Email: admin1@example.com
 Password: Admin@123!
 
 ## How It Works
